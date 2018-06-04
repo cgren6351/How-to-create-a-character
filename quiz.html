@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <style>
+            .card{
+                width:400;
+            }
+            .logo{
+		        width: 100%;
+	        }
+	        .mytext{
+		        font-size:15pt;
+	        }
+	        .titles{
+		        text-align:center;
+		        background-color:lightcyan;
+		        color:black;
+		        font-size:40pt;
+	        }
+        </style>
+        <script type = "text\template" id="template">
+            <div class="card">
+                <h1> {{description}} </h1>
+                <p>A)| {{choice1}} </p><hr>
+                <p> {{choice2}} </p> <hr>
+                <p>( {{lattitude}} , {{longitude}} ) </p>
+                <input id = "{{id}}" type = "text" placeholder = "Enter Choice">
+            </div>
+        </script>
+        <script>
+            var data;
+            function loadJson(){
+                $.getJSON("https://how-to-create-a-character.firebaseio.com/", function(results){
+                    data=results
+                })
+            }
+            function displayData(){
+                var build="";
+                var template=document.getElementById("template").innerHTML;
+                var output=document.getElementById("output");
+                var character = document.getElementById("character");
+                for(var key in data){
+                    build+=Mustache.render(template,data.character[key]);
+                }
+                output.innerHTML=build
+            }
+            function grade(){
+                for(var i = 1; i < 12; i++){
+                    var userAnswer = document.getElementById("q" + i).value;
+                    var correctAnswer = data.character["q" + i].answer;{
+                        score++;
+                    }
+                }
+                alert("Your score is" + score)
+            }
+        </script>
+    </head>
+    <body>
+        <div id="output"></div>
+        <button onclick = "grade()">Grade</button>
+    </body>
+</html>
